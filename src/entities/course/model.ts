@@ -2,6 +2,7 @@ export type Lesson = {
   id: string;
   title: string;
   theory: string;
+  kind?: "lesson" | "final";
   questions: [
     { type: "single"; text: string; options: string[]; correct: number },
     { type: "multiple"; text: string; options: string[]; correct: number[] },
@@ -25,7 +26,7 @@ function lesson(id: string, title: string, theory: string, concept: string, acti
   };
 }
 
-export const courses: Course[] = [
+const baseCourses: Course[] = [
   {
     id: "messenger", title: "Мессенджер Битрикс24", lessons: [
       lesson("chats", "Личные и групповые чаты", "Чаты помогают быстро обсуждать рабочие вопросы. Личные диалоги подходят для точечных тем, а групповые — для совместной работы команды с общей историей сообщений.", "Выбор подходящего формата чата для общения", ["Создать групповой чат", "Добавить участников", "Найти сообщение в истории"]),
@@ -62,5 +63,20 @@ export const courses: Course[] = [
     ],
   },
 ];
+
+export const courses: Course[] = baseCourses.map((course) => {
+  const finalLesson: Lesson = {
+    id: "final-test",
+    title: "Итоговое тестирование",
+    theory: "Проверьте знания по трем урокам этого блока.",
+    kind: "final",
+    questions: [
+      course.lessons[0].questions[0],
+      course.lessons[1].questions[1],
+      course.lessons[2].questions[2],
+    ],
+  };
+  return { ...course, lessons: [...course.lessons, finalLesson] };
+});
 
 export const lessonKey = (courseId: CourseId, lessonId: string) => `${courseId}:${lessonId}`;

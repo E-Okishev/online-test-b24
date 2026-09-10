@@ -1,11 +1,12 @@
 import { courses, lessonKey, type CourseId } from "../../entities/course/model";
-import { getCompletedLessons } from "../../entities/course/progress";
+import { getCompletedLessons, getSubmissions } from "../../entities/course/progress";
 import { CourseLessonsModal } from "./CourseLessonsModal";
 
 type Props = { userName: string; openCourse?: CourseId; onOpen: (course: CourseId) => void; onClose: () => void; onLesson: (course: CourseId, lessonId: string) => void };
 
 export function CoursesPage({ userName, openCourse, onOpen, onClose, onLesson }: Props) {
   const completed = getCompletedLessons(userName);
+  const submissions = getSubmissions().filter((submission) => submission.userName.toLocaleLowerCase("ru-RU") === userName.toLocaleLowerCase("ru-RU"));
   const progress = Math.round((completed.length / courses.flatMap((course) => course.lessons).length) * 100);
 
   return (
@@ -31,7 +32,7 @@ export function CoursesPage({ userName, openCourse, onOpen, onClose, onLesson }:
           })}
         </div>
       </section>
-      {openCourse && <CourseLessonsModal course={courses.find((course) => course.id === openCourse)!} completed={completed} onClose={onClose} onLesson={(lessonId) => onLesson(openCourse, lessonId)} />}
+      {openCourse && <CourseLessonsModal course={courses.find((course) => course.id === openCourse)!} completed={completed} submissions={submissions} onClose={onClose} onLesson={(lessonId) => onLesson(openCourse, lessonId)} />}
     </main>
   );
 }

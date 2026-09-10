@@ -45,9 +45,11 @@ export function LessonPage({ course, lesson, userName, onBack, onNext }: Props) 
         <div className="lesson-label">{course.title}</div>
         <h1>{lesson.title}</h1>
         <p>{lesson.theory}</p>
-        <img src="https://helpdesk.bitrix24.ru/upload/medialibrary/c56/6dn1xqmo6n5znozb6g93u6qa7ka3kyf9/1.jpg" alt={`Интерфейс Битрикс24: ${lesson.title}`} />
-        <div className="video"><iframe src="https://rutube.ru/play/embed/0c0736a6a0b4e1bb05a033c003817346" title={`Видео: ${lesson.title}`} allow="clipboard-write; autoplay" allowFullScreen /></div>
-        <a className="video-link" href="https://www.bitrix24.ru/training/" target="_blank" rel="noreferrer">Другие видео Битрикс24</a>
+        {lesson.kind !== "final" && <>
+          <img src="https://helpdesk.bitrix24.ru/upload/medialibrary/c56/6dn1xqmo6n5znozb6g93u6qa7ka3kyf9/1.jpg" alt={`Интерфейс Битрикс24: ${lesson.title}`} />
+          <div className="video"><iframe src="https://rutube.ru/play/embed/0c0736a6a0b4e1bb05a033c003817346" title={`Видео: ${lesson.title}`} allow="clipboard-write; autoplay" allowFullScreen /></div>
+          <a className="video-link" href="https://www.bitrix24.ru/training/" target="_blank" rel="noreferrer">Другие видео Битрикс24</a>
+        </>}
       </article>
 
       <form className="lesson-quiz" onSubmit={submit}>

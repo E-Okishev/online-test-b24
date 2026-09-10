@@ -4,7 +4,6 @@ import { courses, type CourseId } from "../entities/course/model";
 import type { User } from "../entities/user/model";
 import { getCurrentUser, logout } from "../entities/user/storage";
 import { AdminPage } from "../pages/admin/AdminPage";
-import { AdminDetailPage } from "../pages/admin/AdminDetailPage";
 import { CoursesPage } from "../pages/courses/CoursesPage";
 import { LessonPage } from "../pages/lesson/LessonPage";
 import { LoginPage } from "../pages/login/LoginPage";
@@ -62,16 +61,10 @@ export function App() {
         <Route path="/courses" element={<CoursesRoute userName={user.name} />} />
         <Route path="/courses/:courseId" element={<CoursesRoute userName={user.name} />} />
         <Route path="/courses/:courseId/lessons/:lessonId" element={<LessonRoute userName={user.name} />} />
-        <Route path="/admin" element={<AdminPage onMaterial={() => go("/courses")} onUser={(name) => go(`/admin/${encodeURIComponent(name)}`)} />} />
-        <Route path="/admin/:userName" element={<AdminUserRoute onBack={() => go("/admin")} />} />
+        <Route path="/admin" element={<AdminPage onMaterial={() => go("/courses")} />} />
         <Route path="*" element={<Navigate to="/courses" replace />} />
       </Routes>
       <ThemeSwitcher value={theme} onChange={setTheme} />
     </>
   );
-}
-
-function AdminUserRoute({ onBack }: { onBack: () => void }) {
-  const { userName } = useParams();
-  return userName ? <AdminDetailPage userName={userName} onBack={onBack} /> : <Navigate to="/admin" replace />;
 }
